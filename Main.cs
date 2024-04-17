@@ -18,6 +18,8 @@ namespace UltraEditor
         private int vychoziPocetZnaku = 0; // výchozí počet znaků prázdného souboru
         private Encoding kodovani = Encoding.UTF8; // standardní kódování pro soubory
         private string slozka = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+        private bool jeUlozeny = false;
+        private string uzivateluvSoubor;
 
         public Main()
         {
@@ -66,43 +68,174 @@ namespace UltraEditor
         private void tboxText_TextChanged(object sender, EventArgs e)
         {
             lblPocetZnaku.Text = VratPocetZnaku(tboxText.Text.Length); // aktualizace počtu znaků
+
+            // přidání indikátoru neuloženého souboru
+            if (!Text.StartsWith("*"))
+            {
+                Text = $"* {Text}";
+            }
+
+            jeUlozeny = false;
         }
 
         private void uložitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            openFile.Title = "Uložit soubor";
             saveFile.DefaultExt = "uet";
             saveFile.FileName = vychoziNazev;
             saveFile.InitialDirectory = slozka;
             saveFile.Filter = "Ultra Editor Text (*.uet)|*.uet";
             saveFile.AddExtension = true;
+            saveFile.RestoreDirectory = true;
 
-            if (saveFile.ShowDialog() == DialogResult.OK)
+            if(!jeUlozeny)
             {
-                // Získání vybraného umístění pro uložení souboru
-                string cilovySoubor = saveFile.FileName;
+                if(string.IsNullOrEmpty(uzivateluvSoubor))
+                {
+                    if (saveFile.ShowDialog() == DialogResult.OK)
+                    {
+                        // Získání vybraného umístění pro uložení souboru
+                        string cilovySoubor = saveFile.FileName;
 
+                        uzivateluvSoubor = saveFile.FileName;
+
+                        try
+                        {
+                            // Uložení obsahu TextBoxu do souboru
+                            File.WriteAllText(cilovySoubor, tboxText.Text);
+
+                            // nastavení nového titulku okna editoru s názvem právě uloženého souboru
+                            Text = $"{Path.GetFileNameWithoutExtension(cilovySoubor)} | Ultra Editor";
+
+                            jeUlozeny = true;
+
+                            uzivateluvSoubor = cilovySoubor;
+
+                            // Zpráva pro potvrzení, že soubor byl úspěšně uložen
+                            MessageBox.Show("Soubor byl úspěšně uložen.", "Úspěch", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Zpráva o chybě, pokud uložení selže
+                            MessageBox.Show($"Nastala chyba při uložení souboru:\r\n{ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        // Získání vybraného umístění pro uložení souboru
+                        string cilovySoubor = uzivateluvSoubor;
+
+                        File.WriteAllText(uzivateluvSoubor, tboxText.Text); // Použijeme cestu k uloženému souboru
+
+                        // nastavení nového titulku okna editoru s názvem právě uloženého souboru
+                        Text = $"{Path.GetFileNameWithoutExtension(cilovySoubor)} | Ultra Editor";
+
+                        jeUlozeny = true;
+
+                        uzivateluvSoubor = cilovySoubor;
+
+                        MessageBox.Show("Změny byly úspěšně uloženy.", "Úspěch", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Nastala chyba při ukládání změn:\r\n{ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
                 try
                 {
-                    // Uložení obsahu TextBoxu do souboru
-                    File.WriteAllText(cilovySoubor, tboxText.Text);
+                    string cilovySoubor = uzivateluvSoubor;
+
+                    File.WriteAllText(uzivateluvSoubor, tboxText.Text); // Použijeme cestu k uloženému souboru
 
                     // nastavení nového titulku okna editoru s názvem právě uloženého souboru
                     Text = $"{Path.GetFileNameWithoutExtension(cilovySoubor)} | Ultra Editor";
 
-                    // Zpráva pro potvrzení, že soubor byl úspěšně uložen
-                    MessageBox.Show("Soubor byl úspěšně uložen.", "Úspěch", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    jeUlozeny = true;
+
+                    uzivateluvSoubor = cilovySoubor;
+
+                    MessageBox.Show("Změny byly úspěšně uloženy.", "Úspěch", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    // Zpráva o chybě, pokud uložení selže
-                    MessageBox.Show($"Nastala chyba při ukládání souboru: {ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Nastala chyba při ukládání změn:\r\n{ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
         private void ukončitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Environment.Exit(0);
+            if(!jeUlozeny)
+            {
+                DialogResult result = MessageBox.Show($"Chcete uložit změny do: {vychoziNazev}?", "Ultra Editor", MessageBoxButtons.YesNoCancel);
+
+                if (result == DialogResult.Yes)
+                {
+                    uložitToolStripMenuItem_Click(sender, e);
+                    Environment.Exit(0);
+                }
+                else if (result == DialogResult.No)
+                {
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+
+        private void otevřítToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFile.Title = "Otevřít soubor";
+            openFile.FileName = "";
+            openFile.DefaultExt = "uet";
+            openFile.InitialDirectory = slozka;
+            openFile.Filter = "Ultra Editor Text (*.uet)|*.uet";
+            openFile.AddExtension = true;
+            openFile.RestoreDirectory = true;
+
+            if (openFile.ShowDialog() == DialogResult.OK)
+            {
+                string cilovySoubor = openFile.FileName;
+
+                // nastavení nového titulku okna editoru s názvem právě otevřeného souboru
+                Text = $"{Path.GetFileNameWithoutExtension(cilovySoubor)} | Ultra Editor";
+
+                try
+                {
+                    StreamReader reader = new StreamReader(cilovySoubor);
+
+                    tboxText.Text = ""; // vyprázdnění textboxu po otevření nového souboru
+
+                    while(!reader.EndOfStream)
+                    {
+                        tboxText.Text += reader.ReadToEnd();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Zpráva o chybě, pokud uložení selže
+                    MessageBox.Show($"Nastala chyba při otevření souboru:\r\n{ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void Main_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Zachycení kombinace kláves Ctrl + S
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                uložitToolStripMenuItem_Click(sender, e);
+                // Zabránění dalšímu zpracování události
+                e.SuppressKeyPress = true;
+            }
         }
     }
 }

@@ -60,7 +60,8 @@
             this.zobrazitToolStripMenuItem});
             this.hlavniMenu.Location = new System.Drawing.Point(0, 0);
             this.hlavniMenu.Name = "hlavniMenu";
-            this.hlavniMenu.Size = new System.Drawing.Size(975, 28);
+            this.hlavniMenu.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.hlavniMenu.Size = new System.Drawing.Size(731, 24);
             this.hlavniMenu.TabIndex = 1;
             this.hlavniMenu.Text = "menuStrip2";
             // 
@@ -71,26 +72,27 @@
             this.uložitToolStripMenuItem,
             this.ukončitToolStripMenuItem});
             this.souborToolStripMenuItem.Name = "souborToolStripMenuItem";
-            this.souborToolStripMenuItem.Size = new System.Drawing.Size(71, 24);
+            this.souborToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.souborToolStripMenuItem.Text = "Soubor";
             // 
             // otevřítToolStripMenuItem
             // 
             this.otevřítToolStripMenuItem.Name = "otevřítToolStripMenuItem";
-            this.otevřítToolStripMenuItem.Size = new System.Drawing.Size(142, 26);
+            this.otevřítToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.otevřítToolStripMenuItem.Text = "Otevřít";
+            this.otevřítToolStripMenuItem.Click += new System.EventHandler(this.otevřítToolStripMenuItem_Click);
             // 
             // uložitToolStripMenuItem
             // 
             this.uložitToolStripMenuItem.Name = "uložitToolStripMenuItem";
-            this.uložitToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.uložitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.uložitToolStripMenuItem.Text = "Uložit";
             this.uložitToolStripMenuItem.Click += new System.EventHandler(this.uložitToolStripMenuItem_Click);
             // 
             // ukončitToolStripMenuItem
             // 
             this.ukončitToolStripMenuItem.Name = "ukončitToolStripMenuItem";
-            this.ukončitToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.ukončitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ukončitToolStripMenuItem.Text = "Ukončit";
             this.ukončitToolStripMenuItem.Click += new System.EventHandler(this.ukončitToolStripMenuItem_Click);
             // 
@@ -101,25 +103,25 @@
             this.časADatumToolStripMenuItem,
             this.písmoToolStripMenuItem});
             this.upravitToolStripMenuItem.Name = "upravitToolStripMenuItem";
-            this.upravitToolStripMenuItem.Size = new System.Drawing.Size(71, 26);
+            this.upravitToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.upravitToolStripMenuItem.Text = "Upravit";
             // 
             // najítToolStripMenuItem
             // 
             this.najítToolStripMenuItem.Name = "najítToolStripMenuItem";
-            this.najítToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.najítToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.najítToolStripMenuItem.Text = "Najít";
             // 
             // časADatumToolStripMenuItem
             // 
             this.časADatumToolStripMenuItem.Name = "časADatumToolStripMenuItem";
-            this.časADatumToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.časADatumToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.časADatumToolStripMenuItem.Text = "Čas a datum";
             // 
             // písmoToolStripMenuItem
             // 
             this.písmoToolStripMenuItem.Name = "písmoToolStripMenuItem";
-            this.písmoToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.písmoToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.písmoToolStripMenuItem.Text = "Písmo";
             // 
             // zobrazitToolStripMenuItem
@@ -127,13 +129,13 @@
             this.zobrazitToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.zalamováníŘádkůToolStripMenuItem});
             this.zobrazitToolStripMenuItem.Name = "zobrazitToolStripMenuItem";
-            this.zobrazitToolStripMenuItem.Size = new System.Drawing.Size(79, 26);
+            this.zobrazitToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.zobrazitToolStripMenuItem.Text = "Zobrazit";
             // 
             // zalamováníŘádkůToolStripMenuItem
             // 
             this.zalamováníŘádkůToolStripMenuItem.Name = "zalamováníŘádkůToolStripMenuItem";
-            this.zalamováníŘádkůToolStripMenuItem.Size = new System.Drawing.Size(211, 26);
+            this.zalamováníŘádkůToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.zalamováníŘádkůToolStripMenuItem.Text = "Zalamování řádků";
             this.zalamováníŘádkůToolStripMenuItem.Click += new System.EventHandler(this.zalamováníŘádkůToolStripMenuItem_Click);
             // 
@@ -141,9 +143,10 @@
             // 
             this.panel1.Controls.Add(this.tboxText);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 28);
+            this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(975, 446);
+            this.panel1.Size = new System.Drawing.Size(731, 362);
             this.panel1.TabIndex = 2;
             // 
             // tboxText
@@ -153,8 +156,9 @@
             this.tboxText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tboxText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tboxText.Location = new System.Drawing.Point(0, 0);
+            this.tboxText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tboxText.Name = "tboxText";
-            this.tboxText.Size = new System.Drawing.Size(975, 446);
+            this.tboxText.Size = new System.Drawing.Size(731, 362);
             this.tboxText.TabIndex = 1;
             this.tboxText.Text = "";
             this.tboxText.TextChanged += new System.EventHandler(this.tboxText_TextChanged);
@@ -169,40 +173,44 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblPocetZnaku,
             this.lblKodovani});
-            this.statusStrip.Location = new System.Drawing.Point(0, 475);
+            this.statusStrip.Location = new System.Drawing.Point(0, 385);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(975, 26);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
+            this.statusStrip.Size = new System.Drawing.Size(731, 22);
             this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "statusStrip1";
             // 
             // lblPocetZnaku
             // 
             this.lblPocetZnaku.Name = "lblPocetZnaku";
-            this.lblPocetZnaku.Size = new System.Drawing.Size(87, 20);
+            this.lblPocetZnaku.Size = new System.Drawing.Size(71, 17);
             this.lblPocetZnaku.Text = "Počet znaků";
             // 
             // lblKodovani
             // 
             this.lblKodovani.Name = "lblKodovani";
-            this.lblKodovani.Size = new System.Drawing.Size(72, 20);
+            this.lblKodovani.Size = new System.Drawing.Size(57, 17);
             this.lblKodovani.Text = "Kódování";
             // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(975, 501);
+            this.ClientSize = new System.Drawing.Size(731, 407);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.hlavniMenu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.Name = "Main";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ultra Editor";
             this.Load += new System.EventHandler(this.Main_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Main_KeyDown);
             this.hlavniMenu.ResumeLayout(false);
             this.hlavniMenu.PerformLayout();
             this.panel1.ResumeLayout(false);
