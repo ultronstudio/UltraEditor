@@ -78,21 +78,21 @@
             // otevřítToolStripMenuItem
             // 
             this.otevřítToolStripMenuItem.Name = "otevřítToolStripMenuItem";
-            this.otevřítToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.otevřítToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.otevřítToolStripMenuItem.Text = "Otevřít";
             this.otevřítToolStripMenuItem.Click += new System.EventHandler(this.otevřítToolStripMenuItem_Click);
             // 
             // uložitToolStripMenuItem
             // 
             this.uložitToolStripMenuItem.Name = "uložitToolStripMenuItem";
-            this.uložitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.uložitToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.uložitToolStripMenuItem.Text = "Uložit";
             this.uložitToolStripMenuItem.Click += new System.EventHandler(this.uložitToolStripMenuItem_Click);
             // 
             // ukončitToolStripMenuItem
             // 
             this.ukončitToolStripMenuItem.Name = "ukončitToolStripMenuItem";
-            this.ukončitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ukončitToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.ukončitToolStripMenuItem.Text = "Ukončit";
             this.ukončitToolStripMenuItem.Click += new System.EventHandler(this.ukončitToolStripMenuItem_Click);
             // 
@@ -109,20 +109,23 @@
             // najítToolStripMenuItem
             // 
             this.najítToolStripMenuItem.Name = "najítToolStripMenuItem";
-            this.najítToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.najítToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.najítToolStripMenuItem.Text = "Najít";
+            this.najítToolStripMenuItem.Click += new System.EventHandler(this.najítToolStripMenuItem_Click);
             // 
             // časADatumToolStripMenuItem
             // 
             this.časADatumToolStripMenuItem.Name = "časADatumToolStripMenuItem";
-            this.časADatumToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.časADatumToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.časADatumToolStripMenuItem.Text = "Čas a datum";
+            this.časADatumToolStripMenuItem.Click += new System.EventHandler(this.časADatumToolStripMenuItem_Click);
             // 
             // písmoToolStripMenuItem
             // 
             this.písmoToolStripMenuItem.Name = "písmoToolStripMenuItem";
-            this.písmoToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.písmoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.písmoToolStripMenuItem.Text = "Písmo";
+            this.písmoToolStripMenuItem.Click += new System.EventHandler(this.písmoToolStripMenuItem_Click);
             // 
             // zobrazitToolStripMenuItem
             // 
@@ -144,7 +147,7 @@
             this.panel1.Controls.Add(this.tboxText);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(731, 362);
             this.panel1.TabIndex = 2;
@@ -156,7 +159,7 @@
             this.tboxText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tboxText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tboxText.Location = new System.Drawing.Point(0, 0);
-            this.tboxText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tboxText.Margin = new System.Windows.Forms.Padding(2);
             this.tboxText.Name = "tboxText";
             this.tboxText.Size = new System.Drawing.Size(731, 362);
             this.tboxText.TabIndex = 1;
@@ -203,7 +206,7 @@
             this.Controls.Add(this.hlavniMenu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "Main";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;

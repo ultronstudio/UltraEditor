@@ -80,7 +80,7 @@ namespace UltraEditor
 
         private void uložitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openFile.Title = "Uložit soubor";
+            saveFile.Title = "Uložit soubor";
             saveFile.DefaultExt = "uet";
             saveFile.FileName = vychoziNazev;
             saveFile.InitialDirectory = slozka;
@@ -88,84 +88,74 @@ namespace UltraEditor
             saveFile.AddExtension = true;
             saveFile.RestoreDirectory = true;
 
-            if(!jeUlozeny)
+            if (!jeUlozeny)
             {
-                if(string.IsNullOrEmpty(uzivateluvSoubor))
+                if (string.IsNullOrEmpty(uzivateluvSoubor))
                 {
                     if (saveFile.ShowDialog() == DialogResult.OK)
                     {
-                        // Získání vybraného umístění pro uložení souboru
-                        string cilovySoubor = saveFile.FileName;
-
                         uzivateluvSoubor = saveFile.FileName;
-
-                        try
-                        {
-                            // Uložení obsahu TextBoxu do souboru
-                            File.WriteAllText(cilovySoubor, tboxText.Text);
-
-                            // nastavení nového titulku okna editoru s názvem právě uloženého souboru
-                            Text = $"{Path.GetFileNameWithoutExtension(cilovySoubor)} | Ultra Editor";
-
-                            jeUlozeny = true;
-
-                            uzivateluvSoubor = cilovySoubor;
-
-                            // Zpráva pro potvrzení, že soubor byl úspěšně uložen
-                            MessageBox.Show("Soubor byl úspěšně uložen.", "Úspěch", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        catch (Exception ex)
-                        {
-                            // Zpráva o chybě, pokud uložení selže
-                            MessageBox.Show($"Nastala chyba při uložení souboru:\r\n{ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                        UlozSoubor(uzivateluvSoubor);
                     }
                 }
                 else
                 {
-                    try
-                    {
-                        // Získání vybraného umístění pro uložení souboru
-                        string cilovySoubor = uzivateluvSoubor;
-
-                        File.WriteAllText(uzivateluvSoubor, tboxText.Text); // Použijeme cestu k uloženému souboru
-
-                        // nastavení nového titulku okna editoru s názvem právě uloženého souboru
-                        Text = $"{Path.GetFileNameWithoutExtension(cilovySoubor)} | Ultra Editor";
-
-                        jeUlozeny = true;
-
-                        uzivateluvSoubor = cilovySoubor;
-
-                        MessageBox.Show("Změny byly úspěšně uloženy.", "Úspěch", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Nastala chyba při ukládání změn:\r\n{ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    UlozSoubor(uzivateluvSoubor);
                 }
             }
             else
             {
-                try
+                UlozSoubor(uzivateluvSoubor);
+            }
+        }
+
+        private void UlozSoubor(string cesta)
+        {
+            try
+            {
+                string nazevDokumentu = Path.GetFileNameWithoutExtension(cesta);
+                string datumPrvnihoUlozeni;
+                string datumPosledniUpravy = DateTime.Now.ToString("dd. MM. yyyy HH:mm:ss");
+                string pouzityFont = tboxText.Font.Name;
+                string uzivatel = Environment.UserName;
+
+                if (File.Exists(cesta))
                 {
-                    string cilovySoubor = uzivateluvSoubor;
-
-                    File.WriteAllText(uzivateluvSoubor, tboxText.Text); // Použijeme cestu k uloženému souboru
-
-                    // nastavení nového titulku okna editoru s názvem právě uloženého souboru
-                    Text = $"{Path.GetFileNameWithoutExtension(cilovySoubor)} | Ultra Editor";
-
-                    jeUlozeny = true;
-
-                    uzivateluvSoubor = cilovySoubor;
-
-                    MessageBox.Show("Změny byly úspěšně uloženy.", "Úspěch", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Soubor již existuje, načteme metadata
+                    string[] radky = File.ReadAllLines(cesta);
+                    datumPrvnihoUlozeni = radky[1].Split(new[] { ": " }, StringSplitOptions.None)[1];
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show($"Nastala chyba při ukládání změn:\r\n{ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Soubor neexistuje, nastavíme datum prvního uložení na aktuální čas
+                    datumPrvnihoUlozeni = DateTime.Now.ToString("dd. MM. yyyy HH:mm:ss");
                 }
+
+                // Metadata jako první řádky souboru
+                StringBuilder metadata = new StringBuilder();
+                metadata.AppendLine($"Název dokumentu: {nazevDokumentu}");
+                metadata.AppendLine($"Datum prvního uložení: {datumPrvnihoUlozeni}");
+                metadata.AppendLine($"Datum poslední úpravy: {datumPosledniUpravy}");
+                metadata.AppendLine($"Použitý font: {pouzityFont}");
+                metadata.AppendLine($"Uživatel: {uzivatel}");
+                metadata.AppendLine("==== OBSAH DOKUMENTU ====");
+
+                // Obsah dokumentu
+                string obsah = tboxText.Text;
+
+                // Uložení metadat a obsahu do souboru
+                File.WriteAllText(cesta, metadata.ToString() + Environment.NewLine + obsah);
+
+                // Nastavení nového titulku okna editoru s názvem právě uloženého souboru
+                Text = $"{nazevDokumentu} | Ultra Editor";
+
+                jeUlozeny = true;
+
+                MessageBox.Show("Soubor byl úspěšně uložen.", "Úspěch", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Nastala chyba při uložení souboru:\r\n{ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -205,27 +195,47 @@ namespace UltraEditor
             {
                 string cilovySoubor = openFile.FileName;
 
-                // nastavení nového titulku okna editoru s názvem právě otevřeného souboru
-                Text = $"{Path.GetFileNameWithoutExtension(cilovySoubor)} | Ultra Editor";
-
                 try
                 {
-                    StreamReader reader = new StreamReader(cilovySoubor);
+                    // Přečtení celého souboru
+                    string obsahSouboru = File.ReadAllText(cilovySoubor);
 
-                    tboxText.Text = ""; // vyprázdnění textboxu po otevření nového souboru
+                    // Rozdělení obsahu souboru na řádky
+                    string[] radky = obsahSouboru.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
-                    while(!reader.EndOfStream)
+                    // Načtení metadat
+                    string nazevDokumentu = radky[0].Split(new[] { ": " }, StringSplitOptions.None)[1];
+                    string datumPrvnihoUlozeni = radky[1].Split(new[] { ": " }, StringSplitOptions.None)[1];
+                    string datumPosledniUpravy = radky[2].Split(new[] { ": " }, StringSplitOptions.None)[1];
+                    string pouzityFont = radky[3].Split(new[] { ": " }, StringSplitOptions.None)[1];
+                    string uzivatel = radky[4].Split(new[] { ": " }, StringSplitOptions.None)[1];
+
+                    // Načtení obsahu dokumentu (přeskočení řádků s metadaty a prázdných řádků)
+                    StringBuilder obsahDokumentu = new StringBuilder();
+                    for (int i = 6; i < radky.Length; i++)
                     {
-                        tboxText.Text += reader.ReadToEnd();
+                        obsahDokumentu.AppendLine(radky[i]);
                     }
+
+                    // Nastavení fontu na TextBox
+                    tboxText.Font = new Font(pouzityFont, tboxText.Font.Size);
+
+                    // Nastavení obsahu dokumentu do TextBox
+                    tboxText.Text = obsahDokumentu.ToString();
+
+                    // Nastavení nového titulku okna editoru s názvem právě otevřeného souboru
+                    Text = $"{nazevDokumentu} | Ultra Editor";
+
+                    // Uložení cesty k souboru
+                    uzivateluvSoubor = cilovySoubor;
+
+                    jeUlozeny = true;
                 }
                 catch (Exception ex)
                 {
-                    // Zpráva o chybě, pokud uložení selže
+                    // Zpráva o chybě, pokud otevření selže
                     MessageBox.Show($"Nastala chyba při otevření souboru:\r\n{ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                jeUlozeny = true;
             }
         }
 
@@ -237,6 +247,71 @@ namespace UltraEditor
                 uložitToolStripMenuItem_Click(sender, e);
                 // Zabránění dalšímu zpracování události
                 e.SuppressKeyPress = true;
+            }
+        }
+
+        // vložení aktuálního data a času na aktuální místo kurzoru
+        private void časADatumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Získání aktuálního data a času
+            string currentDateTime = DateTime.Now.ToString("dd. MM. yyyy HH:mm:ss");
+
+            // Vložení data a času na aktuální místo kurzoru v RichTextBox
+            int selectionStart = tboxText.SelectionStart;
+            tboxText.Text = tboxText.Text.Insert(selectionStart, currentDateTime);
+            tboxText.SelectionStart = selectionStart + currentDateTime.Length;
+        }
+
+        private void písmoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (FontDialog fontDialog = new FontDialog())
+            {
+                // Nastavení aktuálního písma v dialogu
+                fontDialog.SelectedFont = tboxText.Font;
+
+                // Pokud uživatel klikne na OK
+                if (fontDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Nastavení vybraného písma na RichTextBox
+                    tboxText.Font = fontDialog.SelectedFont;
+                }
+            }
+        }
+
+        private void najítToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var findDialog = new FindDialog())
+            {
+                // Zobrazení dialogu pro vyhledávání
+                if (findDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string searchText = findDialog.SearchText; // Získání hledaného textu z dialogu
+                    bool matchCase = findDialog.MatchCase; // Získání volby "Match Case" z dialogu
+                    bool searchFromEnd = findDialog.SearchFromEnd; // Získání volby "Search from end" z dialogu
+
+                    // Nastavení parametrů pro hledání
+                    RichTextBoxFinds options = matchCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
+                    if (searchFromEnd)
+                    {
+                        options |= RichTextBoxFinds.Reverse;
+                    }
+
+                    // Hledání textu v RichTextBoxu
+                    int index = tboxText.Find(searchText, tboxText.SelectionStart + tboxText.SelectionLength, options);
+
+                    // Pokud je nalezeno, označí se nalezené slovo
+                    if (index != -1)
+                    {
+                        tboxText.SelectionStart = index;
+                        tboxText.SelectionLength = searchText.Length;
+                        tboxText.Focus();
+                    }
+                    else
+                    {
+                        // Pokud není nalezeno, zobrazí se upozornění
+                        MessageBox.Show($"Slovo \"{searchText}\" nebylo nalezeno.", "Nenalezeno", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
             }
         }
     }
