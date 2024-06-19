@@ -224,6 +224,8 @@ namespace UltraEditor
                     // Zpráva o chybě, pokud uložení selže
                     MessageBox.Show($"Nastala chyba při otevření souboru:\r\n{ex.Message}", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+
+                jeUlozeny = true;
             }
         }
 
